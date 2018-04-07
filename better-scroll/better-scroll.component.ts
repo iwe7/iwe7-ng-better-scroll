@@ -209,43 +209,6 @@ export class BetterScrollComponent implements OnInit, OnChanges, OnDestroy {
   // 是否已经创建了
   isCreated: boolean = false;
 
-  constructor(
-    public ele: ElementRef,
-    // 通过注入 配置我们的默认参数
-    @Inject(BETTER_SCROLL_CONFIG) public _default: any
-  ) {}
-
-  ngOnChanges(changes: SimpleChanges) {
-    // 记录配置项目是否有改变
-    let hasChanged: boolean = false;
-    for (let key in changes) {
-      this._default[key] = changes[key].currentValue;
-      hasChanged = true;
-    }
-    if (hasChanged && this.isCreated) {
-      // 如果配置改变并且已经创建了 那么销毁重新创建
-      this.destroy();
-      this.createScroll();
-    }
-  }
-  // 移除绑定事件
-  ngOnDestroy() {
-    this.scroll.off("beforeScrollStart", () => {});
-    this.scroll.off("scrollStart", () => {});
-    this.scroll.off("scroll", () => {});
-    this.scroll.off("scrollCancel", () => {});
-    this.scroll.off("beforeScrollStart", () => {});
-    this.scroll.off("scrollEnd", () => {});
-    this.scroll.off("touchEnd", () => {});
-    this.scroll.off("flick", () => {});
-    this.scroll.off("refresh", () => {});
-    this.scroll.off("destroy", () => {});
-    this.scroll.off("pullingDown", () => {});
-    this.scroll.off("pullingUp", () => {});
-  }
-
-  ngOnInit() {}
-  // 通过注入的ElementRef访问dom
   @Output() onScrollCancel: EventEmitter<any> = new EventEmitter();
   @Output() onScrollEnd: EventEmitter<BScroll.Position> = new EventEmitter();
   @Output() onTouchEnd: EventEmitter<BScroll.Position> = new EventEmitter();
@@ -256,10 +219,49 @@ export class BetterScrollComponent implements OnInit, OnChanges, OnDestroy {
   @Output() onPullingDown: EventEmitter<this> = new EventEmitter();
   @Output() onPullingUp: EventEmitter<this> = new EventEmitter();
 
+  constructor(
+    // 通过注入的ElementRef访问dom
+    public ele: ElementRef,
+    // 通过注入 配置我们的默认参数
+    @Inject(BETTER_SCROLL_CONFIG) public _default: any
+  ) {}
+  /**
+   * 如果配置改变并且已经创建了 那么销毁重新创建
+   */
+  ngOnChanges(changes: SimpleChanges) {
+    let hasChanged: boolean = false;
+    for (let key in changes) {
+      this._default[key] = changes[key].currentValue;
+      hasChanged = true;
+    }
+    if (hasChanged && this.isCreated) {
+      this.destroy();
+      this.createScroll();
+    }
+  }
+  /**
+   * 注销移除
+   */
+  ngOnDestroy() {
+    this.destroy();
+  }
+
+  ngOnInit() {}
+
   ngAfterViewInit() {
     this.createScroll();
   }
-  // 初始化better scroll
+
+  /**
+   * 监控dom内容变更
+   * 刷新better scroll
+   */
+  changeContent(e: any) {
+    this.refresh();
+  }
+  /**
+   * 初始化better scroll
+   */
   createScroll() {
     this.scroll = new BScroll(this.ele.nativeElement, this._default);
     // 已经创建了
@@ -295,11 +297,7 @@ export class BetterScrollComponent implements OnInit, OnChanges, OnDestroy {
       this.onPullingUp.emit(this);
     });
   }
-  // 监控dom内容变更
-  changeContent(e: any) {
-    // 刷新better scroll
-    this.scroll.refresh();
-  }
+
   // 刷新状态
   refresh(): this {
     this.scroll.refresh();
