@@ -19,8 +19,7 @@
     "dest": "../../../iwe7/better-scroll",
     "workingDirectory": "./.ng_build",
     "lib": {
-      "entryFile": "./public_api.ts",
-      "comments" : "none"
+      "entryFile": "./public_api.ts"
     }
   }
 }

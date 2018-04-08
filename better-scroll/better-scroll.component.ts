@@ -18,7 +18,6 @@ import {
 import * as _better_scroll from "better-scroll";
 const BScroll = (_better_scroll as any).default || _better_scroll;
 
-export const BETTER_SCROLL_CONFIG = new InjectionToken("BETTER_SCROLL_CONFIG");
 import { CdkObserveContent } from "@angular/cdk/observers";
 
 export const BetterScrollConfigDefault = {
@@ -45,7 +44,7 @@ export const BetterScrollConfigDefault = {
   probeType: 0,
   preventDefault: true,
   preventDefaultException: {
-    tagName: new RegExp(/^(INPUT|TEXTAREA|BUTTON|SELECT)$/)
+    tagName: new RegExp('/^(INPUT|TEXTAREA|BUTTON|SELECT)$/')
   },
   HWCompositing: true,
   useTransition: true,
@@ -67,6 +66,15 @@ export const BetterScrollConfigDefault = {
   },
   stopPropagation: false
 };
+
+export function betterScrollConfig() {
+  return BetterScrollConfigDefault;
+}
+
+export const BETTER_SCROLL_CONFIG = new InjectionToken("BETTER_SCROLL_CONFIG", {
+  providedIn: "root",
+  factory: betterScrollConfig
+});
 
 export interface BetterScrollWhellInterface {
   selectedIndex: number;

@@ -14,12 +14,7 @@ export class NgBetterScrollModule {
   public static forRoot(cfg: any): ModuleWithProviders {
     return {
       ngModule: NgBetterScrollModule,
-      providers: [
-        {
-          provide: BETTER_SCROLL_CONFIG,
-          useValue: cfg
-        }
-      ]
+      providers: []
     };
   }
 }
