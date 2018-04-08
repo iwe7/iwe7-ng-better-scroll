@@ -45,7 +45,7 @@ export const BetterScrollConfigDefault = {
   probeType: 0,
   preventDefault: true,
   preventDefaultException: {
-    tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT)$/
+    tagName: new RegExp(/^(INPUT|TEXTAREA|BUTTON|SELECT)$/)
   },
   HWCompositing: true,
   useTransition: true,
