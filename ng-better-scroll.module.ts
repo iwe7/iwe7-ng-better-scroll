@@ -10,11 +10,4 @@ import { ObserversModule } from "@angular/cdk/observers";
   declarations: [BetterScrollComponent],
   exports: [BetterScrollComponent]
 })
-export class NgBetterScrollModule {
-  public static forRoot(cfg: any): ModuleWithProviders {
-    return {
-      ngModule: NgBetterScrollModule,
-      providers: []
-    };
-  }
-}
+export class NgBetterScrollModule {}
